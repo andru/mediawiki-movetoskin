@@ -20,7 +20,7 @@ $wgExtensionCredits['parserhook'][] = array(
    'path' => __FILE__,
    'name' => 'Move To Skin',
    'description' => 'Move content from the article to the skin.',
-   'version' => 0.1.2, 
+   'version' => '0.1.2', 
    'author' => 'Andru Vallance',
    'url' => 'https://www.mediawiki.org/wiki/Extension:MoveToSkin'
 );
@@ -30,13 +30,13 @@ class MoveToSkin{
   public static $content = array();
   
   public static function parserFirstCallInit(&$parser){
-  	$parser->setFunctionHook('movetoskin', 'MoveToSkin::parserFunction');
-  	return true;
+    $parser->setFunctionHook('movetoskin', 'MoveToSkin::parserFunction');
+    return true;
   }
   
   public static function languageGetMagic(&$magicWords){
-  	$magicWords['movetoskin'] = array(0,'movetoskin');
-  	return true;
+    $magicWords['movetoskin'] = array(0,'movetoskin');
+    return true;
   }
   
   public static function parserFunction($parser, $name='', $content=''){
