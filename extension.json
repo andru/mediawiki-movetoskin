@@ -1,0 +1,17 @@
+{
+	"name": "Move To Skin",
+	"version": "0.2",
+	"author": "Andru Vallance",
+	"url": "https://www.mediawiki.org/wiki/Extension:MoveToSkin",
+	"description": "Move content from the article to the skin.",
+	"type": "parserhook",
+	"AutoloadClasses": {
+		"MoveToSkin": "MoveToSkin.php"
+	},
+	"Hooks": {
+		"ParserFirstCallInit": "MoveToSkin::parserFirstCallInit",
+		"LanguageGetMagic": "MoveToSkin::languageGetMagic",
+		"OutputPageBeforeHTML": "MoveToSkin::moveContent"
+	},
+	"manifest_version": 2
+}
