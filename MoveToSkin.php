@@ -12,20 +12,38 @@
 
 class MoveToSkin {
 
-	public static $content = array();
+	public static $content = [];
 
+	/**
+	 * @param Parser &$parser
+	 *
+	 * @return bool
+	 * @throws MWException
+	 */
 	public static function parserFirstCallInit( Parser &$parser ) {
 		$parser->setFunctionHook( 'movetoskin', 'MoveToSkin::parserFunction' );
 
 		return true;
 	}
 
+	/**
+	 * @param array &$magicWords
+	 *
+	 * @return bool
+	 */
 	public static function languageGetMagic( &$magicWords ) {
-		$magicWords[ 'movetoskin' ] = array( 0, 'movetoskin' );
+		$magicWords[ 'movetoskin' ] = [ 0, 'movetoskin' ];
 
 		return true;
 	}
 
+	/**
+	 * @param Parser $parser
+	 * @param string $name
+	 * @param string $content
+	 *
+	 * @return array
+	 */
 	public static function parserFunction( $parser, $name = '', $content = '' ) {
 		// we have to wrap the inner content within <p> tags, because MW screws up otherwise by
 		// placing a <p> tag before and after with related closing and opening tags within php's
@@ -37,11 +55,19 @@ class MoveToSkin {
 		return [ $content, 'noparse' => false, 'isHTML' => false ];
 	}
 
-	public static function moveContent( &$out, &$html ) {
-		if ( empty( $html ) ) {
-			return $html;
-		}
-		if ( preg_match_all( '~<ins data-type="movetoskin" data-name="([\w:-]+)">([\S\s]*?)<\/ins>~m', $html, $matches, PREG_SET_ORDER ) ) {
+	/**
+	 * @param OutputPage &$out
+	 * @param string &$html
+	 *
+	 * @return null
+	 */
+	public static function moveContent( OutputPage &$out, &$html ) {
+		if ( !empty( $html ) &&
+			 preg_match_all(
+				'~<ins data-type="movetoskin" data-name="([\w:-]+)">([\S\s]*?)<\/ins>~m',
+				$html, $matches, PREG_SET_ORDER
+			 )
+		) {
 			foreach ( $matches as $match ) {
 				if ( !isset( self::$content[ $match[1] ] ) ) {
 					self::$content[ $match[1] ] = [];
@@ -50,9 +76,14 @@ class MoveToSkin {
 				$html = str_replace( $match[0], '', $html );
 			}
 		}
-		return true;
+		return null;
 	}
 
+	/**
+	 * @param string $target
+	 *
+	 * @return bool
+	 */
 	public static function hasContent( $target ) {
 		if ( isset( self::$content[ $target ] ) ) {
 			return true;
@@ -61,13 +92,18 @@ class MoveToSkin {
 		return false;
 	}
 
+	/**
+	 * @param null $target
+	 *
+	 * @return array|mixed
+	 */
 	public static function getContent( $target = null ) {
 		if ( $target !== null ) {
 			if ( self::hasContent( $target ) ) {
 				return self::$content[ $target ];
 			}
 
-			return array();
+			return [];
 		} else {
 			return self::$content;
 		}
