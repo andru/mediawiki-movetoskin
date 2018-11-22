@@ -9,9 +9,11 @@
 		"MoveToSkin": "MoveToSkin.php"
 	},
 	"Hooks": {
-		"ParserFirstCallInit": "MoveToSkin::parserFirstCallInit",
-		"LanguageGetMagic": "MoveToSkin::languageGetMagic",
-		"OutputPageBeforeHTML": "MoveToSkin::moveContent"
+		"ParserFirstCallInit": "MoveToSkin::onParserFirstCallInit",
+		"OutputPageBeforeHTML": "MoveToSkin::onOutputPageBeforeHTML"
+	},
+	"ExtensionMessagesFiles": {
+		"MoveToSkinMagic": "MoveToSkin.i18n.magic.php"
 	},
 	"manifest_version": 2
 }

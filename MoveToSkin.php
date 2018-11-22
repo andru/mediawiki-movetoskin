@@ -17,24 +17,10 @@ class MoveToSkin {
 	/**
 	 * @param Parser &$parser
 	 *
-	 * @return bool
 	 * @throws MWException
 	 */
-	public static function parserFirstCallInit( Parser &$parser ) {
+	public static function onParserFirstCallInit( Parser &$parser ) {
 		$parser->setFunctionHook( 'movetoskin', 'MoveToSkin::parserFunction' );
-
-		return true;
-	}
-
-	/**
-	 * @param array &$magicWords
-	 *
-	 * @return bool
-	 */
-	public static function languageGetMagic( &$magicWords ) {
-		$magicWords[ 'movetoskin' ] = [ 0, 'movetoskin' ];
-
-		return true;
 	}
 
 	/**
@@ -56,12 +42,12 @@ class MoveToSkin {
 	}
 
 	/**
+	 * Move content
+	 *
 	 * @param OutputPage &$out
 	 * @param string &$html
-	 *
-	 * @return null
 	 */
-	public static function moveContent( OutputPage &$out, &$html ) {
+	public static function onOutputPageBeforeHTML( OutputPage &$out, &$html ) {
 		if ( !empty( $html ) &&
 			 preg_match_all(
 				'~<ins data-type="movetoskin" data-name="([\w:-]+)">([\S\s]*?)<\/ins>~m',
@@ -76,7 +62,6 @@ class MoveToSkin {
 				$html = str_replace( $match[0], '', $html );
 			}
 		}
-		return null;
 	}
 
 	/**
